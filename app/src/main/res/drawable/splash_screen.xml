@@ -2,10 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@drawable/bg_design"/>
+        android:drawable="@color/white"/>
 
     <item
-        android:scaleType="centerCrop"
-        android:drawable="@drawable/ic_highlight_off_red_a700_18dp"/>
+        android:scaleType="center"
+        android:drawable="@drawable/mirror"/>
 
 </layer-list>

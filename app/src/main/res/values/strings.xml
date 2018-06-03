@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App Name</string>
+    <string name="app_name">PortinariMirror</string>
 
     <string name="dialog_action_ok">OK</string>
     <string name="dialog_loading">Carregando&#8230;</string>

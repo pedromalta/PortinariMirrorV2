@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <FrameLayout
@@ -9,17 +8,17 @@
         android:layout_height="match_parent">
 
 
-        <net.clubedocomputador.portinari.features.faces.widget.CameraSourcePreview
+        <net.clubedocomputador.portinari.PortinariMirror.features.faces.widget.CameraSourcePreview
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <net.clubedocomputador.portinari.features.faces.widget.GraphicOverlay
+            <net.clubedocomputador.portinari.PortinariMirror.features.faces.widget.GraphicOverlay
                 android:id="@+id/faceOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-        </net.clubedocomputador.portinari.features.faces.widget.CameraSourcePreview>
+        </net.clubedocomputador.portinari.PortinariMirror.features.faces.widget.CameraSourcePreview>
 
         <FrameLayout
             android:id="@+id/shutter"

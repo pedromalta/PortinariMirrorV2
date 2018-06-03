@@ -3,6 +3,7 @@ apply from: '../config/quality/quality.gradle'
 apply from: '../config/jacoco.gradle'
 apply plugin: 'com.github.ben-manes.versions'
 //apply plugin: 'io.fabric'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 27
@@ -18,10 +19,14 @@ android {
         enabled = true
     }
 
+    realm {
+        syncEnabled = true;
+    }
+
     defaultConfig {
         defaultPublishConfig 'debug'
 
-        applicationId "net.clubedocomputador.portinari.PortinariMirror"
+        applicationId "net.clubedocomputador.portinari.PortinariMirrorApplication"
         minSdkVersion 19
         targetSdkVersion 27
         testInstrumentationRunner "br.com.drivin.runner.RxAndroidJUnitRunner"
@@ -32,14 +37,14 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        buildConfigField("String", "DRIVIN_API_URL", "\"${DrivinApiUrl}\"")
+        buildConfigField("String", "API_URL", "\"${ApiUrl}\"")
         buildConfigField("String", "API_KEY", "\"${ApiKey}\"")
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "DRIVIN_API_URL", "\"${DrivinApiUrl}\"")
+            buildConfigField("String", "API_URL", "\"${ApiUrl}\"")
             buildConfigField("String", "API_KEY", "\"${ApiKey}\"")
         }
     }
@@ -139,4 +144,5 @@ dependencies {
 
     testImplementation unitTestLibs
     androidTestImplementation androidTestsLibs
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 }
