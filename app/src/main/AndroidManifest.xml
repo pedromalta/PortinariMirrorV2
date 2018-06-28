@@ -27,8 +27,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
             android:name=".features.splash.SplashActivity"
-            android:label="@string/app_name"
-            >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,9 +37,9 @@
         <activity
             android:name=".features.dashboard.DashboardActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".features.faces.FaceActivity"
-            android:windowSoftInputMode="stateHidden" />
+        <service
+            android:name=".features.faces.FaceService"
+            android:exported="true" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,6 +52,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
 
     </application>
 

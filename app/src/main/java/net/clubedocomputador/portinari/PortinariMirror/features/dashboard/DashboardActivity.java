@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
@@ -14,6 +16,7 @@ import net.clubedocomputador.portinari.PortinariMirror.BuildConfig;
 import net.clubedocomputador.portinari.PortinariMirror.R;
 import net.clubedocomputador.portinari.PortinariMirror.features.base.BaseActivity;
 import net.clubedocomputador.portinari.PortinariMirror.features.dashboard.widget.DashboardWebViewClient;
+import net.clubedocomputador.portinari.PortinariMirror.features.faces.FaceService;
 import net.clubedocomputador.portinari.PortinariMirror.injection.component.ActivityComponent;
 import net.clubedocomputador.portinari.PortinariMirror.util.Util;
 
@@ -55,15 +58,17 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
         dashboard.setWebViewClient(new DashboardWebViewClient(loading));
         dashboard.loadUrl(getUrl());
 
+
     }
 
-    private String getUrl(){
+    private String getUrl() {
         return BuildConfig.API_URL;
     }
 
 
     private void setupFaceRecognition() {
-
+        Intent intent = new Intent(this, FaceService.class);
+        startService(intent);
     }
 
 
@@ -73,7 +78,7 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
     @Override
     protected void onResume() {
         super.onResume();
-       // startCameraSource();
+        // startCameraSource();
     }
 
     /**
