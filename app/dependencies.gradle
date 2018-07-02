@@ -20,6 +20,7 @@ ext {
             leakcanary      : '1.5.4',
             sherlock        : '1.0.4@aar',
 			hawk			: '2.0.1',
+            eventbus        : '3.1.1',
 
             espresso        : '3.0.1',
             testRunner      : '1.0.1',
@@ -58,6 +59,7 @@ ext {
             retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit",
             rxAdapter    : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
             gsonConverter: "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+            scalarConv   : "com.squareup.retrofit2:converter-scalars:$versions.retrofit",
             sqlbrite     : "com.squareup.sqlbrite:sqlbrite:$versions.sqlbrite"
     ]
 
@@ -118,6 +120,7 @@ ext {
     butterKnife = "com.jakewharton:butterknife:$versions.butterKnife"
     butterKnifeCompiler = "com.jakewharton:butterknife-compiler:$versions.butterKnife"
 	hawk = "com.orhanobut:hawk:$versions.hawk"
+    eventbus = "org.greenrobot:eventbus:$versions.eventbus"
 
     glide = "com.github.bumptech.glide:glide:$versions.glide"
     glideCompiler = "com.github.bumptech.glide:compiler:$versions.glide"
@@ -131,7 +134,7 @@ ext {
     supportLibs = supportDeps.values()
     networkLibs = retrofit.values() + okHttp.values()
     rxJavaLibs = rxJava.values()
-    otherLibs = [butterKnife, timber, dagger, hawk, glide, glideOkhttp, caligraphy, apacheCommons]
+    otherLibs = [butterKnife, timber, dagger, hawk, glide, glideOkhttp, caligraphy, apacheCommons, eventbus]
 
     debugLibs = onlyDebug.values() + leakCannary
     releaseLibs = onlyRelease.values() + leakCannary

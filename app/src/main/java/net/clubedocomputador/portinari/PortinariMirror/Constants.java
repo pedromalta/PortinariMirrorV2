@@ -8,7 +8,6 @@ public interface Constants {
     String PREF_FILE_NAME = "pref_file";
 
     interface Preferences {
-        String LOGIN_ID = "login_id";
-        String AUTOCOMPLETE_LOGIN_ID = "autocomplete_login_id";
+        String COOKIES = "cookies";
     }
 }

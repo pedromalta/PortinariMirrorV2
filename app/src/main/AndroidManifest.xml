@@ -37,9 +37,7 @@
         <activity
             android:name=".features.dashboard.DashboardActivity"
             android:windowSoftInputMode="stateHidden" />
-        <service
-            android:name=".features.faces.FaceService"
-            android:exported="true" />
+        <service android:name=".features.face.FaceService" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -52,6 +50,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
 
 
     </application>

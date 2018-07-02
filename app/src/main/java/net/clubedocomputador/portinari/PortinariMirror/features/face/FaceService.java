@@ -1,12 +1,18 @@
-package net.clubedocomputador.portinari.PortinariMirror.features.faces;
+package net.clubedocomputador.portinari.PortinariMirror.features.face;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.ExifInterface;
 import android.media.MediaActionSound;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.MultiProcessor;
@@ -14,10 +20,20 @@ import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
-import net.clubedocomputador.portinari.PortinariMirror.data.model.Login;
+import net.clubedocomputador.portinari.PortinariMirror.data.model.FaceDetected;
 import net.clubedocomputador.portinari.PortinariMirror.util.AppLogger;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Observable;
+
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.internal.operators.observable.ObservableCreate;
+import io.reactivex.schedulers.Schedulers;
 
 public class FaceService extends Service {
 
@@ -30,7 +46,7 @@ public class FaceService extends Service {
         FaceDetector detector = new FaceDetector.Builder(getApplicationContext())
                 .setProminentFaceOnly(true) // optimize for single, relatively large face
                 .setTrackingEnabled(true) // enable face tracking
-                .setClassificationType(/* eyes open and smile */ FaceDetector.ALL_CLASSIFICATIONS)
+                .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
                 .setMode(FaceDetector.FAST_MODE) // for one face this is OK
                 .build();
 
@@ -80,15 +96,42 @@ public class FaceService extends Service {
     private void takePicture() {
 
         mCameraSource.takePicture(
-                () -> {
-
-                },
+                () -> {},
                 (bytes) -> {
-
-                    //presenter.recognise(new Login(bytes));
-
+                    mute(false);
+                    processBitmap(bytes);
                 });
+    }
 
+    private void processBitmap(byte[] bytes){
+
+        ObservableCreate<byte[]> proccessBytes = new ObservableCreate<>(e -> {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            bitmap = rotateImage(bitmap, 270);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            e.onNext(baos.toByteArray());
+            e.onComplete();
+        });
+
+        proccessBytes
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(FaceDetected::new, throwable -> AppLogger.e(throwable.getMessage()));
+
+
+    }
+
+    private void mute(Boolean mute){
+        AudioManager mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        mgr.setStreamMute(AudioManager.STREAM_SYSTEM, mute);
+    }
+
+    private Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
     }
 
 
@@ -132,6 +175,7 @@ public class FaceService extends Service {
             elapsedFrameCount++;
             if (elapsedFrameCount > frameCountForPicture) {
                 elapsedFrameCount = 0;
+                mute(true);
                 takePicture();
             }
 
@@ -159,3 +203,4 @@ public class FaceService extends Service {
 
     }
 }
+

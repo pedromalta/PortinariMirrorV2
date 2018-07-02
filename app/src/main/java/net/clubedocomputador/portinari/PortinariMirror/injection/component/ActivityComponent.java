@@ -1,7 +1,6 @@
 package net.clubedocomputador.portinari.PortinariMirror.injection.component;
 
 import net.clubedocomputador.portinari.PortinariMirror.features.dashboard.DashboardActivity;
-import net.clubedocomputador.portinari.PortinariMirror.features.faces.FaceActivity;
 import net.clubedocomputador.portinari.PortinariMirror.features.splash.SplashActivity;
 import dagger.Subcomponent;
 
@@ -16,7 +15,5 @@ public interface ActivityComponent {
     void inject(SplashActivity splashActivity);
 
     void inject(DashboardActivity dashboardActivity);
-
-    void inject(FaceActivity faceActivity);
 
 }

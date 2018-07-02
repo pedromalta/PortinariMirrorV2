@@ -1,6 +1,7 @@
 package net.clubedocomputador.portinari.PortinariMirror.injection.module;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -8,6 +9,11 @@ import com.google.gson.GsonBuilder;
 import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import net.clubedocomputador.portinari.PortinariMirror.BuildConfig;
+import net.clubedocomputador.portinari.PortinariMirror.injection.ApplicationContext;
+import net.clubedocomputador.portinari.PortinariMirror.util.AddCookiesInterceptor;
+import net.clubedocomputador.portinari.PortinariMirror.util.ReceivedCookiesInterceptor;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -18,6 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import timber.log.Timber;
 
 /**
@@ -40,6 +47,7 @@ public class NetworkModule {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
@@ -47,15 +55,36 @@ public class NetworkModule {
 
     @Provides
     @Singleton
+    AddCookiesInterceptor provideAddCookiesInterceptor(@ApplicationContext SharedPreferences preferences){
+        return new AddCookiesInterceptor(preferences);
+    }
+
+    @Provides
+    @Singleton
+    ReceivedCookiesInterceptor provideReceiveCookiesInterceptor(@ApplicationContext SharedPreferences preferences){
+        return new ReceivedCookiesInterceptor(preferences);
+    }
+
+
+    @Provides
+    @Singleton
     OkHttpClient provideOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor,
                                      StethoInterceptor stethoInterceptor,
-                                     ChuckInterceptor chuckInterceptor) {
+                                     ChuckInterceptor chuckInterceptor,
+                                     ReceivedCookiesInterceptor receivedCookiesInterceptor,
+                                     AddCookiesInterceptor addCookiesInterceptor) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             httpClientBuilder.addInterceptor(chuckInterceptor);
             httpClientBuilder.addInterceptor(httpLoggingInterceptor);
             httpClientBuilder.addNetworkInterceptor(stethoInterceptor);
         }
+        //httpClientBuilder.addInterceptor(addCookiesInterceptor);
+        //httpClientBuilder.addInterceptor(receivedCookiesInterceptor);
+
+        httpClientBuilder.connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS);
         return httpClientBuilder.build();
     }
 

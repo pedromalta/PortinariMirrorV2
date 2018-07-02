@@ -5,7 +5,7 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
-import net.clubedocomputador.portinari.PortinariMirror.data.LoginService;
+import net.clubedocomputador.portinari.PortinariMirror.data.DashboardService;
 import net.clubedocomputador.portinari.PortinariMirror.data.local.InstanceHolder;
 import net.clubedocomputador.portinari.PortinariMirror.data.local.PreferencesHelper;
 import dagger.Component;
@@ -21,7 +21,7 @@ public interface AppComponent {
 
     Application application();
 
-    LoginService loginService();
+    DashboardService loginService();
 
     PreferencesHelper preferencesHelper();
 

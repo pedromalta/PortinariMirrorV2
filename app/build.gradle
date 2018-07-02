@@ -129,7 +129,6 @@ dependencies {
     implementation rxJavaLibs
     implementation otherLibs
 
-    implementation 'com.google.maps.android:android-maps-utils:0.3.4'
     debugImplementation debugLibs
     releaseImplementation releaseLibs
 
@@ -144,5 +143,4 @@ dependencies {
 
     testImplementation unitTestLibs
     androidTestImplementation androidTestsLibs
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 }
